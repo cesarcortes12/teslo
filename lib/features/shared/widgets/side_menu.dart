@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:teslo_shop/features/auth/presentation/cubit/auth_cubit/auth_cubit.dart';
 import 'package:teslo_shop/features/shared/shared.dart';
 
 class SideMenu extends StatefulWidget {
@@ -24,6 +26,7 @@ class _SideMenuState extends State<SideMenu> {
 
     final hasNotch = MediaQuery.of(context).viewPadding.top > 35;
     final textStyles = Theme.of(context).textTheme;
+    final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
     
 
     return NavigationDrawer(
@@ -72,7 +75,9 @@ class _SideMenuState extends State<SideMenu> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: CustomFilledButton(
-            onPressed: () {},
+            onPressed: () {
+              authCubit.logout();
+            },
             text: 'Cerrar sesión'
           ),
         ),

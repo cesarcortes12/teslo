@@ -10,9 +10,27 @@ class AuthDataSourceImpl extends AuthDatasource {
   ));
 
   @override
-  Future<User> checkAuthStatus(String token) {
-    // TODO: implement checkAuthStatus
-    throw UnimplementedError();
+  Future<User> checkAuthStatus(String token) async {
+    try {
+      final response = await dio.get('/auth/check-status',
+          options: Options(
+            headers: {
+            'Authorization': 'Bearer $token'
+          }));
+      print(response);
+      final user = UserMapper.userJsonToEntity(response.data);
+      return user;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw CustomError(e.response?.data['message'] ?? 'Token invalido');
+      }
+
+      if (e.type == DioExceptionType.connectionTimeout)
+        throw CustomError('revisar conexión');
+      throw Exception();
+    } catch (e) {
+      throw Exception();
+    }
   }
 
   @override
@@ -25,9 +43,10 @@ class AuthDataSourceImpl extends AuthDatasource {
       return user;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
-        throw CustomError(e.response?.data['message']?? 'credenciales incorrectas');
+        throw CustomError(
+            e.response?.data['message'] ?? 'credenciales incorrectas');
       }
-      
+
       if (e.type == DioExceptionType.connectionTimeout)
         throw CustomError('revisar conexión');
       throw Exception();
@@ -37,21 +56,22 @@ class AuthDataSourceImpl extends AuthDatasource {
   }
 
   @override
-  Future<User> register(String email, String password, String fullName)async {
+  Future<User> register(String email, String password, String fullName) async {
     try {
-      final response = await dio.post('/auth/register', data:{"email": email, "password": password, "fullName": fullName});
+      final response = await dio.post('/auth/register',
+          data: {"email": email, "password": password, "fullName": fullName});
       final user = UserMapper.userJsonToEntity(response.data);
       return user;
     } on DioException catch (e) {
-      if(e.response?.statusCode == 401){
-        throw CustomError(e.response?.data['message']?? 'creacion ususario fallida');
+      if (e.response?.statusCode == 401) {
+        throw CustomError(
+            e.response?.data['message'] ?? 'creacion ususario fallida');
       }
       if (e.type == DioExceptionType.connectionTimeout)
         throw CustomError('revisar conexión');
       throw Exception();
-      
-    }catch(e){
+    } catch (e) {
       throw Exception();
-  }  
+    }
   }
 }
