@@ -38,13 +38,13 @@ class Approuter {
         final isGointTo = state.subloc;
         AuthStatus authStatus = authCubit.state.authStatus;
 
-        BlocListener<AuthCubit, AuthState>(
+        /*(
           listener: (context, state) {
             if (state.authStatus == AuthStatus.authenticated) {
               authStatus = AuthStatus.authenticated;
             }
           },
-        );
+        );*/
 
         print('GoRouter authStatus: $authStatus, isGointTo: $isGointTo');
 

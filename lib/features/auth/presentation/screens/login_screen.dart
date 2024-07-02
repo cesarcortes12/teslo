@@ -87,6 +87,7 @@ class _LoginForm extends StatelessWidget {
               label: 'Contraseña',
               obscureText: true,
               onChanged: (value) => loginCubit.passwordChange(value),
+              onFieldSubmitted:(_)=>loginCubit.onSubmit(), 
               errorMessage: loginCubit.state.isFormPosted
                   ? loginCubit.state.password.errorMessage
                   : null,

@@ -66,7 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
         authStatus: AuthStatus.notAuthenticated,
         user: null,
         errorMessage: errorMessage));
-        print('funciona logged out: ${state.authStatus}');
+    print('funciona logged out: ${state.authStatus}');
   }
 
 //metodo centralizado y privado ya que las funciones hacen un estado similar
