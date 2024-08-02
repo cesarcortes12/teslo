@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teslo_shop/features/shared/infraestructure/inputs/services/key_value_storage_service.dart';
 
-class KeyValueStorageServiceImpl implements KeyValueStorageService {
+class 
+KeyValueStorageServiceImpl implements KeyValueStorageService {
   Future<SharedPreferences> getSharedPrefs() async {
+    WidgetsFlutterBinding.ensureInitialized();
     return await SharedPreferences.getInstance();
   }
 

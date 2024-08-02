@@ -6,9 +6,9 @@ import 'package:teslo_shop/features/auth/infraestructure/repositories/auth_repos
 import 'package:teslo_shop/features/auth/presentation/cubit/auth_cubit/auth_cubit.dart';
 import 'package:teslo_shop/features/auth/presentation/cubit/login_form_cubit/login_form_cubit.dart';
 import 'package:teslo_shop/features/auth/presentation/cubit/register_form_cubit/register_form_cubit.dart';
-import 'package:teslo_shop/features/products/domain/domain.dart';
 import 'package:teslo_shop/features/products/infraestructure/infraestructure.dart';
 import 'package:teslo_shop/features/products/infraestructure/repositories/products_repository_impl.dart';
+import 'package:teslo_shop/features/products/presentation/cubit/product_cubit/product_cubit.dart';
 import 'package:teslo_shop/features/products/presentation/cubit/products_cubit/products_cubit.dart';
 import 'package:teslo_shop/features/shared/infraestructure/inputs/services/key_value_storage_service_impl.dart';
 
@@ -17,7 +17,10 @@ void main() async {
   final authRepositoryImpl = AuthRepositoryImpl();
   final keyValueStorageService = KeyValueStorageServiceImpl();
   final token = await keyValueStorageService.getValue<String>('token');
-  final productsRepository = ProductsRepositoryImpl(ProductsDatasourceImpl(accessToken: token!));
+
+  
+  final productsRepository = ProductsRepositoryImpl(
+      ProductsDatasourceImpl(accessToken: token == null ? '' : token));
 
   runApp(
     MultiBlocProvider(
@@ -33,9 +36,15 @@ void main() async {
             create: (context) => RegisterFormCubit(
                 authCubit: BlocProvider.of<AuthCubit>(context))),
         BlocProvider(
-            create: (context)=> ProductsCubit(
-              productsRepository: productsRepository
-            ))
+            create: (context) =>
+                ProductsCubit(  
+                  productsRepository: productsRepository)),
+        BlocProvider(
+          create: (context) => ProductCubit(
+              productsRepository: productsRepository,
+              
+        )
+        )
       ],
       child: const MainApp(),
     ),
@@ -54,6 +63,5 @@ class MainApp extends StatelessWidget {
         theme: AppTheme().getTheme(),
       );
     });
-    
   }
 }

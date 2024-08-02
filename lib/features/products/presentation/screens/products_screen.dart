@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:teslo_shop/features/products/presentation/cubit/product_cubit/product_cubit.dart';
 import 'package:teslo_shop/features/products/presentation/cubit/products_cubit/products_cubit.dart';
 import 'package:teslo_shop/features/products/presentation/widgets/widgets.dart';
 import 'package:teslo_shop/features/shared/shared.dart';
@@ -68,6 +69,7 @@ class _ProductsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsState = context.watch<ProductsCubit>().state;
+    final productCubit = context.read<ProductCubit>();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -80,8 +82,12 @@ class _ProductsView extends StatelessWidget {
         itemCount: productsState.products.length,
         itemBuilder: (context, index) {
           final product = productsState.products[index];
+
           return GestureDetector(
-              onTap: () => context.push('/product/${product.id}'),
+              onTap: () => {
+                    context.push('/product/${product.id}'),
+                    //context.read<ProductCubit>().loadProduct(product.id),
+                  },
               child: ProductCard(product: product));
         },
       ),

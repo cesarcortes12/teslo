@@ -5,18 +5,15 @@ import '../../domain/domain.dart';
 import '../infraestructure.dart';
 
 class AuthDataSourceImpl extends AuthDatasource {
-  final dio = Dio(BaseOptions(
+  final dio = Dio(); /*BaseOptions(
     baseUrl: Enviroment.apiUrl,
-  ));
+  ));*/
 
   @override
   Future<User> checkAuthStatus(String token) async {
     try {
-      final response = await dio.get('/auth/check-status',
-          options: Options(
-            headers: {
-            'Authorization': 'Bearer $token'
-          }));
+      final response = await dio.get('${Enviroment.apiUrl}/auth/check-status',
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
       print(response);
       final user = UserMapper.userJsonToEntity(response.data);
       return user;
@@ -36,8 +33,8 @@ class AuthDataSourceImpl extends AuthDatasource {
   @override
   Future<User> login(String email, String password) async {
     try {
-      final response = await dio
-          .post('/auth/login', data: {"email": email, "password": password});
+      final response = await dio.post('${Enviroment.apiUrl}/auth/login',
+          data: {"email": email, "password": password});
 
       final user = UserMapper.userJsonToEntity(response.data);
       return user;
@@ -58,7 +55,7 @@ class AuthDataSourceImpl extends AuthDatasource {
   @override
   Future<User> register(String email, String password, String fullName) async {
     try {
-      final response = await dio.post('/auth/register',
+      final response = await dio.post('${Enviroment.apiUrl}/auth/register',
           data: {"email": email, "password": password, "fullName": fullName});
       final user = UserMapper.userJsonToEntity(response.data);
       return user;

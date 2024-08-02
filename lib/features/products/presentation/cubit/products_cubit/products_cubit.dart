@@ -7,7 +7,10 @@ part 'products_state.dart';
 class ProductsCubit extends Cubit<ProductsState> {
   final ProductsRepository productsRepository;
 
-  ProductsCubit({required this.productsRepository}) : super(ProductsState()) {
+  ProductsCubit({
+    required this.productsRepository,
+   
+    }) : super(ProductsState()) {
     //apenas se cree la instancia se jecuta el laodnextpage
 
     loadNextPage();
