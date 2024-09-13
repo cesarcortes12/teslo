@@ -3,23 +3,19 @@ import 'package:teslo_shop/features/auth/infraestructure/infraestructure.dart';
 import 'package:teslo_shop/features/products/domain/domain.dart';
 
 class ProductMapper {
-  static jsonToEntity(Map<String,dynamic> json) => Product(
+  static jsonToEntity(Map<String, dynamic> json) => Product(
       id: json['id'],
       title: json['title'],
       price: double.parse(json['price'].toString()),
       description: json['description'],
       slug: json['slug'],
       stock: json['stock'],
-      sizes: List<String>.from(json['sizes'].map((size)=>size)),
+      sizes: List<String>.from(json['sizes'].map((size) => size)),
       gender: json['gender'],
-      tags: List<String>.from(json['tags'].map((tag)=>tag)), 
-      images:List<String>.from(
-        json['images'].map(
-        (image) => image.startsWith("http") 
-        ? image 
-        : 'http://192.168.6.46:3000/api/files/product/$image'
-      )
-      ), 
-      user: UserMapper.userJsonToEntity(json['user']) 
-      );
+      tags: List<String>.from(json['tags'].map((tag) => tag)),
+      images: List<String>.from(json['images'].map((image) =>
+          image.startsWith("http")
+              ? image
+              : '${Enviroment.apiUrl}/files/product/$image')),
+      user: UserMapper.userJsonToEntity(json['user']));
 }
